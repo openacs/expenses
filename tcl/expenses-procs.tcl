@@ -36,4 +36,18 @@ ad_proc mark_all_exported {
 	db_dml "mark_exported" "update expenses set exp_exported = 't'"
 }
 
+ad_proc list_expense_codes {
+	{-id:required }
+} {
+	HAM (hamilton.chua@gmail.com)
+	Return comma separated list of expense codes given an expense id
+} {
+	set expense_codes ""
+	set categories [category::get_mapped_categories $id]
+	foreach category_id $categories {
+		append expense_codes "[category::get_name $category_id]"
+	}
+	return [join $expense_codes ", "]
+}
+
 }

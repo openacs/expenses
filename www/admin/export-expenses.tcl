@@ -49,30 +49,38 @@ template::list::create \
 	community_id {
 		label "Community"
 	}
+	expense_codes {
+		label "Expense Codes"
+	}
     } 
 
 # build the multirow
 
-set query "select exp_id, exp_amount, exp_date, exp_expense, user_id, community_id from expenses"
+set query "select exp_id, exp_amount, exp_date, exp_expense, user_id, community_id from expenses where exp_exported = false"
 
-if { $all == 0 } {		
-	set items_for_export [join $bind_id_list ","]
-	append query " where exp_id in ( $items_for_export )"
+# Save for Later in case we want 
+# to bring back selective exports
+
+#if { $all == 0 } {		
+#	set items_for_export [join $bind_id_list ","]
+#	append query " and exp_id in ( $items_for_export )"
 	# mark id's as exported only if $mark ==1
-	if { $mark == 1 } {
-		foreach id $exp_id {
-			expenses::mark_exported -id $id
-		}
-	}
-} else {
-	if { $mark == 1 } {
-		expenses::mark_all_exported
-		# db_dml "mark_all_exported" "update expenses set exp_exported = 't'"
-	}
+#	if { $mark == 1 } {
+#		foreach id $exp_id {
+#			expenses::mark_exported -id $id
+#		}
+#	}
+#} else {
+#}
+
+
+db_multirow -extend {expense_codes} expenses get_expenses $query {
+	set expense_codes [expenses::list_expense_codes -id $exp_id]
 }
 
-
-db_multirow expenses get_expenses $query
+if { $mark == 1 } {
+	expenses::mark_all_exported
+}
 
 # change headers to output csv
 set outputheaders [ns_conn outputheaders]

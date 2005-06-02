@@ -7,6 +7,8 @@ ad_library {
     @cvs-id $Id$
 }
 
+namespace eval expenses { }
+
 ad_proc -private expenses::package_mount {
     -package_id
     -node_id

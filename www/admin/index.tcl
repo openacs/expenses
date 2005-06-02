@@ -22,7 +22,7 @@ template::list::create \
     -multirow expenses \
     -key exp_id \
     -actions {
-            "Export All and MARK ALL Transferred" "export-confirm?all=1&mark=1" "Export All Expenses"
+            "Export All Non-Transferred and MARK ALL Transfered" "export-confirm?all=1&mark=1" "Export All Expenses"
     	    "Export All but DO NOT MARK Transferred" "export-confirm?all=1&mark=0" "Export Expenses"
     } -elements {
 	exp_date {
@@ -41,7 +41,7 @@ template::list::create \
 		label "Course/Section"
 	}
 	exp_exported {
-		label "Exported"
+		label "Transferred"
 		display_template { 
 			<if @expenses.exp_exported@ eq "t">
 				Yes
@@ -50,6 +50,9 @@ template::list::create \
 				No
 			</else>
 		}
+	}
+	expense_codes {
+		label "Expense Codes"
 	}
     } -orderby {
 	exp_date { orderby exp_date }
@@ -60,9 +63,11 @@ template::list::create \
 
 set orderby_clause "[template::list::orderby_clause -name expenses -orderby]"
 
-db_multirow -extend {course} expenses get_expenses { } {
+db_multirow -extend {course expense_codes} expenses get_expenses { } {
 	# retrieve course/section for this expense
-	db_0or1row "section_info" "select section_name, course_id from dotlrn_ecommerce_section where community_id =:community_id"
-	set course_name [db_string "getcoursename" "select course_name from dotlrn_catalog where course_id = (select latest_revision from cr_items where item_id =:course_id)"]
-	set course "$course_name/$section_name"
+	if { [db_0or1row "section_info" "select section_name, course_id from dotlrn_ecommerce_section where community_id =:community_id"] } {
+		set course_name [db_string "getcoursename" "select course_name from dotlrn_catalog where course_id = (select latest_revision from cr_items where item_id =:course_id)"]
+		set course "$course_name/$section_name"
+		set expense_codes [expenses::list_expense_codes -id $exp_id]
+	}
 }
