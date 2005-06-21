@@ -12,7 +12,7 @@
         <owner url="mailto:ham@solutiongrove.com">Solution Grove</owner>
 
         <!-- No dependency information -->
-	<requires url="expense-tracking" version="0.1d"/>
+	<requires url="expense-tracking" version="0.1a"/>
         <callbacks>
         </callbacks>
         <parameters>
