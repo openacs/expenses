@@ -13,6 +13,7 @@
 
         <!-- No dependency information -->
 	<requires url="expense-tracking" version="0.1a"/>
+        <requires url="dotlrn" version="2.1.2d1"/>
         <callbacks>
         </callbacks>
         <parameters>
