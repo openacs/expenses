@@ -15,7 +15,7 @@
 	<requires url="expense-tracking" version="0.1a"/>
         <requires url="dotlrn" version="2.1.2d1"/>
         <callbacks>
-	   <callback type="package-mount"  proc="expenses::package_mount"/>
+	   <callback type="after-mount"  proc="expenses::package_mount"/>
         </callbacks>
         <parameters>
         <!-- No version parameters -->
