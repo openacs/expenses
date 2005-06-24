@@ -50,4 +50,29 @@ ad_proc list_expense_codes {
 	return [join $expense_codes ", "]
 }
 
+ad_proc list_terms {
+	{-id:required }
+} {
+	HAM (hamilton.chua@gmail.com)
+	Return comma separated list of TERMS (e.g Fall, Winter)
+	of the section that this expense belongs to
+	Return null if section is not categorized under any term
+} {
+	# we got an expense id, let's get the community id of the section it belongs to
+	set package_id [db_string "getpackageid" "select community_id from expenses where exp_id = :id"]
+
+	# get the tree id of the terms category
+	set tree_id [db_string "gettreeid" "select tree_id from category_tree_translations where name = 'Terms'"]
+
+	set terms [list]
+	set categories [category::get_mapped_categories $package_id]
+	foreach category_id $categories {
+		if { [category::get_tree $category_id] == $tree_id } {
+			lappend terms "[category::get_name $category_id]"
+		}
+	}
+	return [join $terms ", "]
+}
+
+
 }
