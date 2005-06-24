@@ -16,6 +16,6 @@ ad_proc -private expenses::package_mount {
     create the category tree for expenses
     
 } {
-    set tree_id [category_tree::add -name "expenses"]
+    set tree_id [category_tree::add -name "Expense Codes"]
     category_tree::map -tree_id $tree_id -object_id $package_id
 }
