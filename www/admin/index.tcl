@@ -61,7 +61,6 @@ template::list::create \
     } -orderby {
 	exp_date { orderby exp_date }
 	exp_amount { orderby exp_amount }
-	term { orderby term }
     } 
 
 # build the multirow
