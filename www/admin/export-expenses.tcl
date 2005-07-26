@@ -43,9 +43,6 @@ template::list::create \
 		label "Amount"
 		display_template { $ @expenses.exp_amount;noquote@ }
 	}
-	class_key {
-		label "Class"
-	}
 	community_id {
 		label "Community"
 	}
