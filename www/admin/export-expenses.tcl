@@ -49,6 +49,9 @@ template::list::create \
 	expense_codes {
 		label "Expense Codes"
 	}
+	expense_types {
+		label "Expense Types"
+	}
     } 
 
 # build the multirow
@@ -71,8 +74,9 @@ set query "select exp_id, exp_amount, exp_date, exp_expense, user_id, community_
 #}
 
 
-db_multirow -extend {expense_codes} expenses get_expenses $query {
+db_multirow -extend {expense_codes expense_types} expenses get_expenses $query {
 	set expense_codes [expenses::list_expense_codes -id $exp_id]
+	set expense_types [expenses::list_expense_types -id $exp_id]
 }
 
 if { $mark == 1 } {
