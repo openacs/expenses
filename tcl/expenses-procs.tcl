@@ -43,11 +43,49 @@ ad_proc list_expense_codes {
 	Return comma separated list of expense codes given an expense id
 } {
 	set expense_codes ""
-	set categories [category::get_mapped_categories $id]
-	foreach category_id $categories {
-		append expense_codes "[category::get_name $category_id]"
+	# Get category tree id of expense code
+	set package_id [expenses::get_package_id]
+	set tree_list [category_tree::get_mapped_trees $package_id]
+	foreach tree $tree_list {
+		if { [lindex $tree 1] == "Expense Codes"} {
+			set tree_id [lindex $tree 0]
+		}
 	}
-	return [join $expense_codes ", "]
+	if { [exists_and_not_null tree_id] } {
+		set categories [category::get_mapped_categories -tree_id $tree_id $id]
+		foreach category_id $categories {
+			append expense_codes "[category::get_name $category_id]"
+		}
+		return [join $expense_codes ", "]
+	} else {
+		return ""
+	}
+}
+
+ad_proc list_expense_types {
+	{-id:required }
+} {
+	HAM (hamilton.chua@gmail.com)
+	Return comma separated list of expense types given an expense id
+} {
+	set expense_types ""
+	# Get category tree id of expense type
+	set package_id [expenses::get_package_id]
+	set tree_list [category_tree::get_mapped_trees $package_id]
+	foreach tree $tree_list {
+		if { [lindex $tree 1] == "Expense Types"} {
+			set tree_id [lindex $tree 0]
+		}
+	}	
+	if { [exists_and_not_null tree_id] } {
+		set categories [category::get_mapped_categories -tree_id $tree_id $id]
+		foreach category_id $categories {
+			append expense_types "[category::get_name $category_id]"
+		}
+		return [join $expense_types ", "]
+	} else {
+		return ""
+	}
 }
 
 ad_proc list_terms {

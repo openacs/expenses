@@ -55,6 +55,9 @@ template::list::create \
 	expense_codes {
 		label "Expense Codes"
 	}
+	expense_types {
+		label "Expense Types"
+	}
 	terms {
 		label "Term"
 	}
@@ -67,12 +70,13 @@ template::list::create \
 
 set orderby_clause "[template::list::orderby_clause -name expenses -orderby]"
 
-db_multirow -extend {course expense_codes terms } expenses get_expenses { } {
+db_multirow -extend {course expense_codes expense_types terms } expenses get_expenses { } {
 	# retrieve course/section for this expense
 	if { [db_0or1row "section_info" "select section_name, course_id from dotlrn_ecommerce_section where community_id =:community_id"] } {
 		set course_name [db_string "getcoursename" "select course_name from dotlrn_catalog where course_id = (select latest_revision from cr_items where item_id =:course_id)"]
 		set course "$course_name/$section_name"
 		set expense_codes [expenses::list_expense_codes -id $exp_id]
+		set expense_types [expenses::list_expense_types -id $exp_id]
 		set terms [expenses::list_terms -id $exp_id]
 	}
 }
