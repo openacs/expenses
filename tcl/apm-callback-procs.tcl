@@ -9,13 +9,12 @@ ad_library {
 
 namespace eval expenses { }
 
-ad_proc -private expenses::package_mount {
-    -package_id
-    -node_id
+ad_proc -private expenses::after_install {
 } {
     create the categories for expenses
     
 } {
+    set package_id [expenses::get_package_id]
     set tree_id [category_tree::add -name "Expense Codes"]
     category_tree::map -tree_id $tree_id -object_id $package_id
     set tree_id [category_tree::add -name "Expense Types"]
