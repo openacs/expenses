@@ -1,7 +1,7 @@
 ad_page_contract {
 
     List line expenses for all courses
-    
+
     @author Hamilton Chua (hamilton.chua@gmail.com)
     @creation-date 2005-05-14
     @cvs-id $Id$
@@ -23,7 +23,7 @@ template::list::create \
     -key exp_id \
     -no_data "No expense have been recorded yet." \
     -actions {
-            "Export All Non-Transferred and MARK ALL Transfered" "export-confirm?all=1&mark=1" "Export All Expenses"
+            "Export All Non-Transferred and MARK ALL Transferred" "export-confirm?all=1&mark=1" "Export All Expenses"
     	    "Export All but DO NOT MARK Transferred" "export-confirm?all=1&mark=0" "Export Expenses"
     } -elements {
 	exp_date {
