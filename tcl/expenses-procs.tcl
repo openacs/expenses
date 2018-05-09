@@ -103,7 +103,7 @@ ad_proc list_terms {
 
 	if { [db_0or1row "get_treeid" "select tree_id from category_tree_translations where name = 'Terms'"] } {
 
-		set terms {}
+		set terms [list]
 		set categories [category::get_mapped_categories $package_id]
 		foreach category_id $categories {
 			if { [category::get_tree $category_id] == $tree_id } {
